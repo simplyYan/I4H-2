@@ -6106,3 +6106,206 @@ Remember, with great power comes great responsibility. Use your skills ethically
 ---
 
 Feel free to ask if you need more details or specific examples!
+
+## Comprehensive GoBuster Tutorial
+
+### Introduction
+
+GoBuster is a powerful tool used primarily for web directory and file brute-forcing, DNS subdomain enumeration, and VHost discovery. It's written in Go, which makes it extremely fast and efficient compared to many other brute-forcing tools. This tutorial will cover everything you need to know to master GoBuster, from installation to advanced usage with real-life examples.
+
+### Table of Contents
+
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Directory/File Brute-Forcing](#directory-file-brute-forcing)
+4. [DNS Subdomain Enumeration](#dns-subdomain-enumeration)
+5. [VHost Discovery](#vhost-discovery)
+6. [Advanced Options](#advanced-options)
+7. [Real-Life Examples](#real-life-examples)
+8. [Conclusion](#conclusion)
+
+### Installation
+
+GoBuster is easy to install, especially on Unix-like systems. Follow these steps to get it set up on your machine:
+
+#### Linux
+
+1. **Install Go**: GoBuster is written in Go, so you need Go installed on your machine.
+   ```bash
+   sudo apt update
+   sudo apt install golang
+   ```
+
+2. **Download and Install GoBuster**:
+   ```bash
+   go install github.com/OJ/gobuster/v3@latest
+   ```
+
+3. **Verify Installation**:
+   ```bash
+   gobuster -h
+   ```
+
+#### Windows
+
+1. **Install Go**: Download and install Go from [golang.org](https://golang.org/dl/).
+
+2. **Download and Install GoBuster**:
+   ```bash
+   go install github.com/OJ/gobuster/v3@latest
+   ```
+
+3. **Verify Installation**:
+   Open Command Prompt or PowerShell and run:
+   ```bash
+   gobuster -h
+   ```
+
+### Basic Usage
+
+GoBuster's usage is straightforward. The basic command structure is:
+```bash
+gobuster <mode> -u <URL> -w <wordlist> [options]
+```
+- `<mode>`: The type of scan (e.g., dir for directory/file brute-forcing, dns for DNS subdomain enumeration, vhost for VHost discovery).
+- `-u <URL>`: The target URL.
+- `-w <wordlist>`: The wordlist to use for brute-forcing.
+
+### Directory/File Brute-Forcing
+
+Directory and file brute-forcing are the most common uses for GoBuster. This method helps find hidden directories and files on a web server.
+
+#### Basic Command
+```bash
+gobuster dir -u http://example.com -w /path/to/wordlist.txt
+```
+
+#### Options
+- `-x`: Specify extensions to append to each word in the wordlist.
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt -x php,html,txt
+  ```
+- `-t`: Number of concurrent threads (default is 10).
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt -t 50
+  ```
+- `-o`: Output to a file.
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt -o results.txt
+  ```
+- `-s`: Specify status codes to include in the results (default is 200,204,301,302,307,401,403).
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt -s "200,204,301,302,307,401,403,500"
+  ```
+
+### DNS Subdomain Enumeration
+
+DNS subdomain enumeration helps find subdomains for a given domain.
+
+#### Basic Command
+```bash
+gobuster dns -d example.com -w /path/to/wordlist.txt
+```
+
+#### Options
+- `-i`: Show IP addresses.
+  ```bash
+  gobuster dns -d example.com -w /path/to/wordlist.txt -i
+  ```
+- `-t`: Number of concurrent threads (default is 10).
+  ```bash
+  gobuster dns -d example.com -w /path/to/wordlist.txt -t 50
+  ```
+- `-o`: Output to a file.
+  ```bash
+  gobuster dns -d example.com -w /path/to/wordlist.txt -o dns_results.txt
+  ```
+
+### VHost Discovery
+
+Virtual Host discovery is used to find virtual hosts on a server.
+
+#### Basic Command
+```bash
+gobuster vhost -u http://example.com -w /path/to/wordlist.txt
+```
+
+#### Options
+- `-t`: Number of concurrent threads (default is 10).
+  ```bash
+  gobuster vhost -u http://example.com -w /path/to/wordlist.txt -t 50
+  ```
+- `-o`: Output to a file.
+  ```bash
+  gobuster vhost -u http://example.com -w /path/to/wordlist.txt -o vhost_results.txt
+  ```
+
+### Advanced Options
+
+GoBuster provides several advanced options to fine-tune your scans:
+
+- `-k`: Skip TLS certificate verification.
+  ```bash
+  gobuster dir -u https://example.com -w /path/to/wordlist.txt -k
+  ```
+- `-e`: Show full URLs in the output.
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt -e
+  ```
+- `--proxy`: Use a proxy for requests.
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt --proxy http://127.0.0.1:8080
+  ```
+- `--timeout`: Set the request timeout (default is 10s).
+  ```bash
+  gobuster dir -u http://example.com -w /path/to/wordlist.txt --timeout 20s
+  ```
+
+### Real-Life Examples
+
+#### Example 1: Directory/File Brute-Forcing
+
+Let's say you want to find hidden directories and files on `http://testphp.vulnweb.com/`.
+
+```bash
+gobuster dir -u http://testphp.vulnweb.com/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,html,txt -t 50 -o gobuster_dir_results.txt
+```
+
+This command will:
+- Target `http://testphp.vulnweb.com/`
+- Use a medium-sized wordlist.
+- Try extensions: php, html, and txt.
+- Use 50 threads.
+- Save the output to `gobuster_dir_results.txt`.
+
+#### Example 2: DNS Subdomain Enumeration
+
+For discovering subdomains of `example.com`:
+
+```bash
+gobuster dns -d example.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -t 50 -o gobuster_dns_results.txt
+```
+
+This command will:
+- Target the domain `example.com`
+- Use a wordlist with top 1 million subdomains.
+- Use 50 threads.
+- Save the output to `gobuster_dns_results.txt`.
+
+#### Example 3: VHost Discovery
+
+To find virtual hosts for `http://example.com`:
+
+```bash
+gobuster vhost -u http://example.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -t 50 -o gobuster_vhost_results.txt
+```
+
+This command will:
+- Target `http://example.com`
+- Use a wordlist with top 1 million subdomains.
+- Use 50 threads.
+- Save the output to `gobuster_vhost_results.txt`.
+
+### Conclusion
+
+GoBuster is an essential tool for penetration testers and security researchers, offering powerful and efficient brute-forcing capabilities. With this tutorial, you should now have a solid understanding of GoBuster's features and how to use them effectively. Practice using real-life examples and different wordlists to get the most out of this tool. Happy hacking!
