@@ -6309,3 +6309,902 @@ This command will:
 ### Conclusion
 
 GoBuster is an essential tool for penetration testers and security researchers, offering powerful and efficient brute-forcing capabilities. With this tutorial, you should now have a solid understanding of GoBuster's features and how to use them effectively. Practice using real-life examples and different wordlists to get the most out of this tool. Happy hacking!
+
+# Parsero Tutorial: Comprehensive Guide for Web Security Enthusiasts
+
+## Introduction to Parsero
+
+Parsero is a tool designed to find and parse robots.txt files from web servers. These files are used by websites to manage and restrict the crawling of their content by search engines and web crawlers. While typically used to manage indexing, robots.txt files can inadvertently reveal sensitive directories or files that should not be publicly accessible.
+
+### Key Features of Parsero
+- Retrieve robots.txt files from target websites.
+- Parse and analyze the retrieved files.
+- Identify potentially sensitive directories and files that might be unintentionally exposed.
+
+## Installing Parsero
+
+Parsero is written in Python and can be installed via GitHub. Follow these steps to get started:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/behindthefirewalls/parsero.git
+   ```
+
+2. **Navigate to the Parsero Directory**
+   ```bash
+   cd parsero
+   ```
+
+3. **Install the Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Using Parsero
+
+### Basic Usage
+
+To use Parsero, navigate to its directory and run the tool with a target URL:
+
+```bash
+python parsero.py -u <target-url>
+```
+
+### Example
+```bash
+python parsero.py -u http://example.com
+```
+
+This command will fetch and parse the `robots.txt` file from `http://example.com`.
+
+### Output Explanation
+
+Parsero will display a list of directories and files mentioned in the `robots.txt` file. The tool will categorize these entries into two main types:
+
+1. **Allowed Entries (`Allow`)**: These are paths that are allowed to be indexed by search engines.
+2. **Disallowed Entries (`Disallow`)**: These are paths that should not be indexed and often contain sensitive information.
+
+### Advanced Options
+
+Parsero offers several command-line options to customize its behavior:
+
+- `-u` or `--url`: Specifies the target URL.
+- `-o` or `--output`: Specifies the output file to save the results.
+- `-v` or `--verbose`: Enables verbose mode for detailed output.
+
+### Example with Options
+```bash
+python parsero.py -u http://example.com -o results.txt -v
+```
+
+## Real-World Examples
+
+### Example 1: Identifying Sensitive Directories
+Imagine you are conducting a security assessment on a client's website, `http://clientwebsite.com`. Running Parsero might reveal entries like:
+
+```bash
+Disallow: /admin
+Disallow: /backup
+Disallow: /config
+```
+
+These entries suggest that the `/admin`, `/backup`, and `/config` directories exist and might contain sensitive information. As a security professional, you should investigate these directories further (while respecting legal and ethical guidelines).
+
+### Example 2: Discovering Exposed Files
+Running Parsero on another target, `http://anotherwebsite.com`, might show:
+
+```bash
+Disallow: /private
+Disallow: /temp
+Disallow: /old_versions
+```
+
+Within these directories, you might find old versions of files, temporary files, or other sensitive data that could be valuable for penetration testing or security analysis.
+
+## Common Use Cases
+
+1. **Reconnaissance**: During the initial stages of a penetration test, Parsero helps gather information about hidden or restricted parts of a website.
+2. **Compliance Audits**: Ensure that sensitive directories and files are not inadvertently exposed through misconfigured `robots.txt` files.
+3. **Web Development**: Developers can use Parsero to check their `robots.txt` configurations and ensure no sensitive paths are included.
+
+## Ethical Considerations
+
+While Parsero is a powerful tool for security testing and reconnaissance, it's essential to use it responsibly:
+
+- **Legal Authorization**: Always obtain permission before running Parsero on a website you do not own.
+- **Data Sensitivity**: Handle any discovered data with care and report findings to the appropriate authorities or website owners.
+
+## Conclusion
+
+Parsero is a valuable tool for web security enthusiasts and professionals, providing insights into the often-overlooked `robots.txt` file. By mastering Parsero, you can enhance your reconnaissance capabilities and help secure web applications more effectively.
+
+### Further Reading and Resources
+
+- [Official Parsero GitHub Repository](https://github.com/behindthefirewalls/parsero)
+- [Understanding robots.txt](https://developers.google.com/search/docs/advanced/robots/intro)
+
+### Final Tips
+
+- Regularly check and update your `robots.txt` files to ensure no sensitive information is inadvertently exposed.
+- Combine Parsero with other reconnaissance tools like Nmap, Wifite, and SQLMap for comprehensive security assessments.
+
+By following this guide and practicing with real-world examples, you can become proficient in using Parsero and contribute to creating more secure web environments. Happy hacking!
+
+Sure, let's dive into a detailed tutorial on Dirb. Dirb is a web content scanner that can be used to find hidden directories and files on a web server. It's a useful tool for penetration testers and security researchers.
+
+# Dirb Tutorial
+
+## Introduction to Dirb
+
+### What is Dirb?
+Dirb is a command-line based tool used for brute-forcing directories and files on web servers. It works by launching dictionary-based attacks against a web server and analyzing the server's responses to find hidden directories and files.
+
+### Why Use Dirb?
+- **Discover Hidden Content:** Find directories and files that are not meant to be publicly accessible.
+- **Identify Misconfigurations:** Spot common web server misconfigurations.
+- **Penetration Testing:** Useful for ethical hacking and penetration testing to understand potential entry points.
+
+## Installation
+
+### Installing on Debian-based Systems
+To install Dirb on Debian-based systems like Ubuntu, use the following command:
+```bash
+sudo apt-get update
+sudo apt-get install dirb
+```
+
+### Installing on Other Systems
+For other systems, you can download the source code from the official [Dirb GitHub repository](https://github.com/seifreed/dirb) and compile it manually:
+```bash
+git clone https://github.com/seifreed/dirb.git
+cd dirb
+./configure
+make
+sudo make install
+```
+
+## Basic Usage
+
+### Running Dirb with Default Wordlist
+To scan a target website using the default wordlist, you can use the following command:
+```bash
+dirb http://example.com
+```
+
+### Specifying a Custom Wordlist
+You can specify a custom wordlist with the `-w` option:
+```bash
+dirb http://example.com /path/to/wordlist.txt
+```
+
+### Saving Output to a File
+To save the scan results to a file, use the `-o` option:
+```bash
+dirb http://example.com -o results.txt
+```
+
+### Recursively Scan Found Directories
+To recursively scan directories found during the initial scan, use the `-r` option:
+```bash
+dirb http://example.com -r
+```
+
+## Advanced Options
+
+### Setting HTTP Headers
+You can set custom HTTP headers with the `-H` option:
+```bash
+dirb http://example.com -H "User-Agent: Mozilla/5.0"
+```
+
+### Scanning with Extensions
+To scan for files with specific extensions, use the `-X` option:
+```bash
+dirb http://example.com -X .php,.html,.txt
+```
+
+### Ignoring Status Codes
+To ignore specific HTTP status codes, use the `-I` option:
+```bash
+dirb http://example.com -I 403,404
+```
+
+## Real-World Examples
+
+### Example 1: Basic Directory Scan
+Let's perform a basic scan on a target website:
+```bash
+dirb http://testphp.vulnweb.com
+```
+This will use the default wordlist and display all directories and files found on the target website.
+
+### Example 2: Using a Custom Wordlist
+Using a more comprehensive wordlist can uncover more hidden content:
+```bash
+dirb http://testphp.vulnweb.com /usr/share/wordlists/dirb/big.txt
+```
+This command uses a larger wordlist to perform a more thorough scan.
+
+### Example 3: Scanning with Extensions
+To look for specific file types, you can specify extensions:
+```bash
+dirb http://testphp.vulnweb.com -X .php,.html,.bak
+```
+This will specifically search for files with `.php`, `.html`, and `.bak` extensions.
+
+### Example 4: Recursively Scanning Directories
+If you want Dirb to scan found directories as well, use the recursive option:
+```bash
+dirb http://testphp.vulnweb.com -r
+```
+Dirb will then go into each discovered directory and continue scanning.
+
+### Example 5: Saving and Analyzing Results
+Save the scan results for later analysis:
+```bash
+dirb http://testphp.vulnweb.com -o scan_results.txt
+```
+You can review the `scan_results.txt` file to analyze the findings in detail.
+
+## Best Practices
+
+### Choosing the Right Wordlist
+- **Default Wordlist:** Good for quick, initial scans.
+- **Custom Wordlist:** Use specialized or larger wordlists for more thorough scans.
+- **Creating Your Own Wordlist:** Tailor wordlists to the specific application or environment you are testing.
+
+### Combining Tools
+- Use Dirb in combination with other tools like Nmap, Nikto, and Burp Suite for comprehensive security assessments.
+- Cross-check results from Dirb with manual inspections to ensure no false positives or negatives.
+
+### Ethical Considerations
+- **Permission:** Always obtain proper authorization before scanning any web server.
+- **Responsible Disclosure:** If you find vulnerabilities, follow responsible disclosure practices to report them to the website owner.
+
+## Conclusion
+
+Dirb is a powerful tool for web content discovery. By understanding its options and capabilities, you can effectively use it to find hidden directories and files, identify potential security issues, and improve your penetration testing skills. Practice using Dirb in a controlled environment, such as a local test server or a legally authorized target, to become proficient with its use.
+
+For more advanced usage and custom scripts, refer to the official [Dirb documentation](https://github.com/seifreed/dirb/blob/master/doc/dirb.txt) and community forums.
+
+Happy hacking, and always stay ethical!
+
+### Netsniff-ng Tutorial
+
+#### Table of Contents
+1. Introduction to Netsniff-ng
+2. Installation
+3. Basic Usage
+4. Advanced Features
+5. Real-World Examples
+6. Best Practices
+7. Conclusion
+
+---
+
+### 1. Introduction to Netsniff-ng
+
+**Netsniff-ng** is a high-performance network analyzer and networking toolkit for Linux. It includes various tools like a packet sniffer, network traffic generator, and network statistics utility. It is designed to be efficient and versatile, offering functionalities comparable to tools like Wireshark, tcpdump, and iperf, but with a focus on high performance.
+
+#### Key Features:
+- **Packet Sniffing**: Capture network packets in real-time.
+- **Traffic Generation**: Generate network traffic for testing purposes.
+- **Network Statistics**: Monitor and analyze network performance.
+- **Low Overhead**: Optimized for performance with minimal resource consumption.
+
+### 2. Installation
+
+To install netsniff-ng on a Linux system, you can use your package manager. On Debian-based systems like Ubuntu, use the following command:
+
+```bash
+sudo apt-get update
+sudo apt-get install netsniff-ng
+```
+
+For other distributions, the installation process may vary. Alternatively, you can compile from source by following the instructions on the [official GitHub repository](https://github.com/netsniff-ng/netsniff-ng).
+
+### 3. Basic Usage
+
+#### Capturing Packets
+
+The primary function of netsniff-ng is to capture network packets. To capture packets on a specific interface, use the following command:
+
+```bash
+sudo netsniff-ng --in eth0
+```
+
+This command captures all packets on the `eth0` interface. You can save the captured packets to a file for later analysis:
+
+```bash
+sudo netsniff-ng --in eth0 --out capture.pcap
+```
+
+#### Reading Captured Packets
+
+To read and analyze previously captured packets, use the following command:
+
+```bash
+sudo netsniff-ng --in capture.pcap
+```
+
+### 4. Advanced Features
+
+#### Traffic Generation
+
+Netsniff-ng can also be used to generate network traffic for testing purposes. Use `trafgen` to create and send custom traffic patterns. First, create a traffic configuration file (e.g., `traffic.cfg`):
+
+```bash
+sudo nano traffic.cfg
+```
+
+Example configuration for generating ICMP echo requests:
+
+```
+dmac(00:11:22:33:44:55) smac(66:77:88:99:aa:bb)
+ipv4(192.168.1.2, 192.168.1.1)
+icmp()
+```
+
+Then, use the following command to send the traffic:
+
+```bash
+sudo trafgen --in traffic.cfg --out eth0
+```
+
+#### Network Statistics
+
+To monitor and analyze network performance, use the `ifpps` tool included in the netsniff-ng suite:
+
+```bash
+sudo ifpps eth0
+```
+
+This command provides real-time network statistics for the `eth0` interface.
+
+### 5. Real-World Examples
+
+#### Example 1: Capturing HTTP Traffic
+
+To capture only HTTP traffic, use the `--filter` option with a BPF (Berkeley Packet Filter) expression:
+
+```bash
+sudo netsniff-ng --in eth0 --out http_capture.pcap --filter "tcp port 80"
+```
+
+#### Example 2: Generating High Volume Traffic
+
+Create a configuration file (`high_traffic.cfg`) for generating high-volume UDP traffic:
+
+```
+dmac(00:11:22:33:44:55) smac(66:77:88:99:aa:bb)
+ipv4(192.168.1.2, 192.168.1.1)
+udp(12345, 80)
+```
+
+Send the traffic using:
+
+```bash
+sudo trafgen --in high_traffic.cfg --out eth0 --rate 100000
+```
+
+#### Example 3: Analyzing DNS Traffic
+
+Capture DNS traffic and analyze the results:
+
+```bash
+sudo netsniff-ng --in eth0 --out dns_capture.pcap --filter "udp port 53"
+sudo netsniff-ng --in dns_capture.pcap --analyze
+```
+
+### 6. Best Practices
+
+- **Running with Root Privileges**: Many netsniff-ng operations require root privileges. Always use `sudo` to ensure proper access.
+- **Filter Traffic**: Use BPF filters to capture only the relevant traffic, reducing the amount of data to analyze.
+- **Monitor Performance**: Use `ifpps` to continuously monitor network performance and identify bottlenecks.
+- **Security Considerations**: Be aware of legal and ethical implications when capturing network traffic, especially on networks you do not own.
+
+### 7. Conclusion
+
+Netsniff-ng is a powerful tool for network analysis, traffic generation, and performance monitoring. By mastering its features and functionalities, you can effectively analyze and optimize network performance. This tutorial covered the basics and some advanced features, providing a foundation for further exploration and use in real-world scenarios. For more detailed information, refer to the [official documentation](https://github.com/netsniff-ng/netsniff-ng).
+
+---
+
+# Reaver: A Comprehensive Guide
+
+Reaver is a powerful tool used to exploit the WPS (Wi-Fi Protected Setup) vulnerability to recover WPA/WPA2 passphrases. This guide will take you through everything you need to know about Reaver, from installation to practical examples. By the end, you'll have a deep understanding of how to use Reaver effectively.
+
+## Table of Contents
+
+1. [Introduction to Reaver](#introduction-to-reaver)
+2. [Installation](#installation)
+3. [Understanding WPS](#understanding-wps)
+4. [Reaver Basics](#reaver-basics)
+5. [Advanced Usage](#advanced-usage)
+6. [Real-World Examples](#real-world-examples)
+7. [Mitigation Techniques](#mitigation-techniques)
+8. [Legal and Ethical Considerations](#legal-and-ethical-considerations)
+9. [Additional Resources](#additional-resources)
+
+## Introduction to Reaver
+
+Reaver is a tool designed to recover WPA/WPA2 passphrases from a wireless router by exploiting the WPS feature. WPS is a standard designed to simplify the process of connecting devices to a wireless network. Unfortunately, WPS has significant security flaws, which Reaver leverages to gain access to the network.
+
+## Installation
+
+### Linux
+
+Reaver is primarily designed for Linux. Here’s how to install it on a Debian-based system (like Ubuntu or Kali Linux):
+
+1. **Update your system:**
+    ```bash
+    sudo apt update
+    ```
+
+2. **Install Reaver:**
+    ```bash
+    sudo apt install reaver
+    ```
+
+### From Source
+
+If you prefer to install Reaver from source:
+
+1. **Install dependencies:**
+    ```bash
+    sudo apt install build-essential libpcap-dev aircrack-ng pixiewps
+    ```
+
+2. **Clone the Reaver repository:**
+    ```bash
+    git clone https://github.com/t6x/reaver-wps-fork-t6x.git
+    cd reaver-wps-fork-t6x/src
+    ```
+
+3. **Compile and install:**
+    ```bash
+    ./configure
+    make
+    sudo make install
+    ```
+
+## Understanding WPS
+
+Wi-Fi Protected Setup (WPS) is a network security standard that was created to allow home users who know little of wireless security to easily set up a secure Wi-Fi network. There are multiple ways to set up WPS:
+- **PIN method:** The router has a PIN, often found on a sticker.
+- **Push-button method:** The user presses a button on the router to allow devices to connect.
+
+The PIN method is where the vulnerability lies. The 8-digit PIN can be brute-forced, as Reaver can determine if the first or second half of the PIN is correct, significantly reducing the number of attempts needed.
+
+## Reaver Basics
+
+### Interface Selection
+
+Before using Reaver, you need to identify your wireless interface and ensure it supports monitor mode.
+
+1. **Identify your wireless interface:**
+    ```bash
+    iwconfig
+    ```
+
+2. **Enable monitor mode:**
+    ```bash
+    sudo ifconfig wlan0 down
+    sudo iwconfig wlan0 mode monitor
+    sudo ifconfig wlan0 up
+    ```
+
+### Basic Reaver Command
+
+To start using Reaver, you need the BSSID (MAC address) of the target AP and the channel it's operating on. You can get this information using a tool like `airodump-ng`.
+
+1. **Start airodump-ng to gather information:**
+    ```bash
+    sudo airodump-ng wlan0
+    ```
+
+2. **Start Reaver:**
+    ```bash
+    sudo reaver -i wlan0 -b <BSSID> -c <channel> -vv
+    ```
+
+- `-i wlan0`: Specifies the wireless interface.
+- `-b <BSSID>`: Specifies the target BSSID.
+- `-c <channel>`: Specifies the channel.
+- `-vv`: Enables verbose output for more detailed information.
+
+## Advanced Usage
+
+### Customizing Reaver Attacks
+
+Reaver offers several options to customize the attack:
+
+- **Timeouts and delays:** Adjusting these can help avoid detection and make the attack more stealthy.
+    ```bash
+    sudo reaver -i wlan0 -b <BSSID> -c <channel> -vv -d 0 -t 5
+    ```
+
+    - `-d 0`: Sets the delay between pin attempts to 0 seconds.
+    - `-t 5`: Sets the receive timeout period to 5 seconds.
+
+- **Lockout states:** Many routers lock WPS after a number of failed attempts. You can set Reaver to handle this.
+    ```bash
+    sudo reaver -i wlan0 -b <BSSID> -c <channel> -vv --lock-delay=60
+    ```
+
+    - `--lock-delay=60`: Waits for 60 seconds before retrying after a lockout.
+
+### Using Pixiewps
+
+Pixiewps is a tool that exploits the WPS vulnerability through an offline attack, known as the Pixie Dust attack. It is faster than traditional Reaver attacks.
+
+1. **Install Pixiewps:**
+    ```bash
+    sudo apt install pixiewps
+    ```
+
+2. **Use Reaver with Pixiewps:**
+    ```bash
+    sudo reaver -i wlan0 -b <BSSID> -c <channel> -vv -K 1
+    ```
+
+    - `-K 1`: Enables Pixie Dust attack mode.
+
+## Real-World Examples
+
+### Example 1: Basic Attack
+
+1. **Identify target information using `airodump-ng`:**
+    ```bash
+    sudo airodump-ng wlan0
+    ```
+
+2. **Start Reaver with basic settings:**
+    ```bash
+    sudo reaver -i wlan0 -b 00:11:22:33:44:55 -c 6 -vv
+    ```
+
+### Example 2: Handling Lockouts
+
+1. **Identify target information using `airodump-ng`:**
+    ```bash
+    sudo airodump-ng wlan0
+    ```
+
+2. **Start Reaver and handle lockouts:**
+    ```bash
+    sudo reaver -i wlan0 -b 00:11:22:33:44:55 -c 6 -vv --lock-delay=60
+    ```
+
+### Example 3: Using Pixie Dust Attack
+
+1. **Identify target information using `airodump-ng`:**
+    ```bash
+    sudo airodump-ng wlan0
+    ```
+
+2. **Start Reaver with Pixie Dust attack:**
+    ```bash
+    sudo reaver -i wlan0 -b 00:11:22:33:44:55 -c 6 -vv -K 1
+    ```
+
+## Mitigation Techniques
+
+To protect against Reaver attacks, consider the following:
+
+1. **Disable WPS:** The most effective method.
+2. **Firmware Updates:** Ensure your router firmware is up to date, as many manufacturers have released patches.
+3. **Use Strong WPA2 Encryption:** Even if WPS is compromised, strong WPA2 passphrases add an additional layer of security.
+4. **Monitor Network:** Regularly check for unauthorized devices.
+
+## Legal and Ethical Considerations
+
+Using Reaver on networks you do not own or have explicit permission to test is illegal and unethical. Always ensure you have proper authorization before conducting any penetration testing.
+
+## Additional Resources
+
+- [Reaver GitHub Repository](https://github.com/t6x/reaver-wps-fork-t6x)
+- [Kali Linux Documentation](https://www.kali.org/docs/)
+- [Wireless Network Security](https://www.us-cert.gov/ncas/tips/ST05-003)
+
+By following this guide, you should have a solid understanding of how to use Reaver effectively and ethically. Always use these tools responsibly and within the bounds of the law.
+
+# Comprehensive Cewl Tutorial
+
+## Introduction
+
+Cewl (Custom Word List Generator) is a powerful Ruby-based tool used in the field of ethical hacking and penetration testing to create custom wordlists by scraping web pages. These wordlists are often used for password cracking and other brute-force attacks. This tutorial will guide you through everything you need to know to master Cewl, from installation to advanced usage with real-life examples.
+
+## Table of Contents
+1. Installation
+2. Basic Usage
+3. Advanced Options
+4. Real-Life Examples
+5. Conclusion
+
+## 1. Installation
+
+### Prerequisites
+- Ruby installed on your system.
+- Internet connection for downloading the tool.
+
+### Installation Steps
+1. Open your terminal.
+2. Install Cewl using RubyGems by running the following command:
+   ```bash
+   sudo gem install cewl
+   ```
+
+### Verifying Installation
+To ensure that Cewl is installed correctly, type `cewl` in your terminal. You should see a help message with various options.
+
+## 2. Basic Usage
+
+### Generating a Basic Wordlist
+To generate a basic wordlist from a website, use the following command:
+```bash
+cewl http://example.com -w wordlist.txt
+```
+This command scrapes the website at `http://example.com` and writes the wordlist to `wordlist.txt`.
+
+### Options Explained
+- `http://example.com`: The target URL.
+- `-w wordlist.txt`: Specifies the output file for the wordlist.
+
+### Example
+```bash
+cewl http://example.com -w example_wordlist.txt
+```
+
+## 3. Advanced Options
+
+Cewl offers several options to fine-tune the wordlist generation process. Here are some of the most useful ones:
+
+### Depth of Scraping
+Specify the depth of the recursive page fetch using `-d`:
+```bash
+cewl http://example.com -d 2 -w wordlist.txt
+```
+This command fetches pages up to two levels deep.
+
+### Minimum Word Length
+Set the minimum word length with `-m`:
+```bash
+cewl http://example.com -m 5 -w wordlist.txt
+```
+This command only includes words with at least 5 characters.
+
+### Including Email Addresses
+Use `--email` to include email addresses in the wordlist:
+```bash
+cewl http://example.com --email -w wordlist.txt
+```
+
+### User Agent
+Specify a custom user agent with `-u`:
+```bash
+cewl http://example.com -u "Mozilla/5.0" -w wordlist.txt
+```
+
+### Verbose Mode
+Enable verbose mode to see more details during execution with `-v`:
+```bash
+cewl http://example.com -v -w wordlist.txt
+```
+
+### Authenticated Access
+If the website requires authentication, you can provide credentials using `-a` and `-u`:
+```bash
+cewl http://example.com -a user:password -w wordlist.txt
+```
+
+### Example Command
+Combining multiple options:
+```bash
+cewl http://example.com -d 2 -m 5 --email -u "Mozilla/5.0" -a user:password -v -w advanced_wordlist.txt
+```
+
+## 4. Real-Life Examples
+
+### Example 1: Scraping a Blog for Wordlist
+Imagine you are conducting a penetration test on a blog site and need to create a custom wordlist:
+```bash
+cewl https://example-blog.com -d 3 -m 4 -w blog_wordlist.txt
+```
+- Depth: 3 (fetch pages up to three levels deep).
+- Minimum word length: 4.
+
+### Example 2: Creating a Wordlist for Password Cracking
+You are preparing a password attack and need a wordlist with specific characteristics:
+```bash
+cewl https://target-website.com -d 2 -m 6 --email -u "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -w password_wordlist.txt
+```
+- Depth: 2.
+- Minimum word length: 6.
+- Include email addresses.
+
+### Example 3: Authenticated Scraping
+The target website requires authentication:
+```bash
+cewl https://secure-website.com -a username:password -d 1 -m 8 --email -v -w secure_wordlist.txt
+```
+- Authenticated access with `username:password`.
+- Depth: 1.
+- Minimum word length: 8.
+- Include email addresses.
+- Verbose mode enabled.
+
+### Example 4: Scraping with Custom User Agent
+To avoid detection by the website's security systems, use a custom user agent:
+```bash
+cewl https://example.com -u "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" -w custom_agent_wordlist.txt
+```
+
+## 5. Conclusion
+
+Cewl is a versatile tool that can be customized to suit various needs in penetration testing and ethical hacking. By mastering its options and understanding how to apply them in real-world scenarios, you can generate effective wordlists for password cracking and other brute-force attacks.
+
+### Key Points
+- **Installation**: Ensure Ruby is installed, then use `gem install cewl`.
+- **Basic Usage**: Use `cewl URL -w wordlist.txt` to generate a wordlist.
+- **Advanced Options**: Customize the depth, word length, email inclusion, user agent, and authentication as needed.
+- **Real-Life Examples**: Apply Cewl in practical scenarios to enhance your penetration testing toolkit.
+
+By practicing with the examples provided and experimenting with different options, you'll gain a thorough understanding of how to leverage Cewl effectively. Happy hacking!
+
+# Hashcat Tutorial: Comprehensive Guide for Mastering Hashcat
+
+## Introduction
+
+Hashcat is a powerful password recovery tool that can help you crack various types of password hashes. It supports multiple hashing algorithms and utilizes the power of your CPU and GPU to perform fast and efficient brute-force and dictionary attacks.
+
+### Key Features of Hashcat:
+- Supports multiple operating systems: Windows, Linux, and macOS.
+- Utilizes CPU and GPU acceleration.
+- Supports a wide range of hashing algorithms.
+- Allows for multiple attack modes: brute-force, dictionary, combinator, mask, and rule-based attacks.
+
+In this tutorial, we will cover everything you need to know to get started with Hashcat, including installation, basic usage, advanced techniques, and real-life examples.
+
+## Installation
+
+### Windows
+1. **Download Hashcat**: Visit the [official Hashcat website](https://hashcat.net/hashcat/) and download the Windows version.
+2. **Extract Files**: Extract the downloaded ZIP file to a preferred location.
+3. **Install GPU Drivers**: Ensure you have the latest drivers for your GPU (NVIDIA or AMD).
+
+### Linux
+1. **Install Dependencies**: Open your terminal and install the necessary dependencies:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install -y build-essential git
+    ```
+2. **Clone Hashcat Repository**: Clone the Hashcat repository from GitHub:
+    ```bash
+    git clone https://github.com/hashcat/hashcat.git
+    cd hashcat
+    ```
+3. **Compile Hashcat**: Compile the source code:
+    ```bash
+    make
+    ```
+
+### macOS
+1. **Install Homebrew**: If you don’t have Homebrew installed, install it by running:
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+2. **Install Hashcat**: Use Homebrew to install Hashcat:
+    ```bash
+    brew install hashcat
+    ```
+
+## Basic Usage
+
+### Hash Types
+Hashcat supports a wide variety of hash types. Here are some common ones:
+- MD5: `0`
+- SHA1: `100`
+- SHA256: `1400`
+- NTLM: `1000`
+- bcrypt: `3200`
+
+To see a full list of supported hash types, run:
+```bash
+hashcat -h
+```
+
+### Cracking a Simple Hash
+
+1. **Generate a Hash**: For demonstration, let's create an MD5 hash of the password "password123":
+    ```bash
+    echo -n "password123" | md5sum
+    ```
+    This will output: `482c811da5d5b4bc6d497ffa98491e38`
+
+2. **Save the Hash**: Save this hash in a file called `hash.txt`.
+
+3. **Run Hashcat**: Use Hashcat to crack the hash:
+    ```bash
+    hashcat -m 0 -a 3 hash.txt ?a?a?a?a?a?a?a?a
+    ```
+    - `-m 0` specifies the hash type (MD5).
+    - `-a 3` specifies the attack mode (brute-force).
+    - `?a?a?a?a?a?a?a?a` specifies the mask (8 characters of any type).
+
+## Advanced Techniques
+
+### Dictionary Attack
+
+A dictionary attack uses a list of possible passwords to try against the hash. This is useful if you have a list of common passwords or a wordlist.
+
+1. **Create a Wordlist**: Create a file named `wordlist.txt` with the following contents:
+    ```
+    password
+    password123
+    letmein
+    123456
+    ```
+2. **Run Hashcat**: Use the wordlist to crack the hash:
+    ```bash
+    hashcat -m 0 -a 0 hash.txt wordlist.txt
+    ```
+
+### Mask Attack
+
+A mask attack is a more focused brute-force attack that uses patterns to guess the password.
+
+1. **Run Hashcat**: Use a mask to crack the hash:
+    ```bash
+    hashcat -m 0 -a 3 hash.txt ?d?d?d?d?d?d?d?d
+    ```
+    - `?d` specifies a digit.
+
+### Rule-Based Attack
+
+Rule-based attacks apply rules to modify passwords in a wordlist.
+
+1. **Create a Rule File**: Create a file named `rules.txt` with the following content:
+    ```
+    :! add 1
+    ```
+2. **Run Hashcat**: Use the rule file to crack the hash:
+    ```bash
+    hashcat -m 0 -a 0 -r rules.txt hash.txt wordlist.txt
+    ```
+
+## Real-Life Examples
+
+### Example 1: Cracking a Password Hash from a Database Dump
+
+1. **Extract Hashes**: Extract the hashes from the database dump and save them in `hashes.txt`.
+2. **Identify Hash Type**: Identify the hash type (e.g., MD5, SHA1).
+3. **Run Hashcat**: Use a combination of dictionary and brute-force attacks to crack the hashes:
+    ```bash
+    hashcat -m 0 -a 0 hashes.txt rockyou.txt
+    ```
+
+### Example 2: Cracking WPA/WPA2 Wi-Fi Passwords
+
+1. **Capture Handshake**: Use a tool like `aircrack-ng` to capture the WPA handshake.
+2. **Convert Handshake**: Convert the captured handshake to a hashcat format using `wpaclean`:
+    ```bash
+    wpaclean cleaned_capture.cap capture.cap
+    ```
+3. **Run Hashcat**: Use a wordlist to crack the Wi-Fi password:
+    ```bash
+    hashcat -m 2500 -a 0 cleaned_capture.cap rockyou.txt
+    ```
+
+### Example 3: Cracking bcrypt Hashes
+
+1. **Identify Hash Type**: bcrypt hashes use type `3200`.
+2. **Run Hashcat**: Use a dictionary attack to crack bcrypt hashes:
+    ```bash
+    hashcat -m 3200 -a 0 bcrypt_hashes.txt rockyou.txt
+    ```
+
+## Conclusion
+
+Hashcat is a versatile and powerful tool for password recovery and cracking. By understanding its various attack modes and options, you can effectively utilize it for security testing and penetration testing. Always remember to use Hashcat responsibly and only on systems you have permission to test.
+
+Happy cracking!
